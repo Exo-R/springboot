@@ -7,7 +7,6 @@ import com.example.springboot.repository.UsersRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -17,14 +16,11 @@ import java.util.stream.Collectors;
 public class defaultUsersService implements UsersService{
 
     private final UsersRepo usersRepo;
-    //private final UsersConverter usersConverter;
     private final UsersMapper usersMapper;
 
     @Override
     public UsersDto saveUser(UsersDto usersDto) throws ValidationException{
         validateUserDto(usersDto);
-        //Users savedUser = usersRepo.save(usersConverter.fromUserDtoToUser(usersDto));
-        //return usersConverter.fromUserToUserDto(savedUser);
         Users savedUser = usersRepo.save(usersMapper.dtoToModel(usersDto));
         return usersMapper.modelToDto(savedUser);
     }
@@ -47,7 +43,6 @@ public class defaultUsersService implements UsersService{
     public UsersDto findByLogin(String login) {
         Users users = usersRepo.findByLogin(login);
         if(users != null){
-            //return usersConverter.fromUserToUserDto(users);
             return usersMapper.modelToDto(users);
         }
         return null;
@@ -55,10 +50,6 @@ public class defaultUsersService implements UsersService{
 
     @Override
     public List<UsersDto> findAll() {
-        //return usersRepo.findAll()
-        //        .stream()
-        //        .map(usersConverter::fromUserToUserDto)
-        //        .collect(Collectors.toList());
         return usersRepo.findAll()
                 .stream()
                 .map(usersMapper::modelToDto)
